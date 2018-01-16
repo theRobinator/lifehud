@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="{{request.locale_name}}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Life HUD</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="//oss.maxcdn.com/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this scaffold -->
+    <link href="{{request.static_url('lifehud:static/theme.css')}}" rel="stylesheet">
+  </head>
+    <body>
+        <h1>Weather</h1>
+        <ul>
+            {% for hour in forecast %}
+                <li>
+                    <img style="height: 1em;" src="{{ request.static_url('lifehud:static/images/weather/' + hour.icon + '.png') }}">
+                    {{ hour.time }}: {{ hour.summary }}, {{ hour.feelsLike }}&deg;{% if hour.rainChance >= 20 %}, {{ hour.rainChance }}% chance of rain{% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+
+        <hr />
+
+        <h1>Next week's calendar</h1>
+        {% for day_info in calendar %}
+            <h2>{{ day_info[0]['day'] }}</h2>
+            <ul>
+                {% for event in day_info %}
+                    <li>
+                        ({{ event.calendar }})
+                        {% if event.all_day %}
+                            {{ event.title }}
+                        {% else %}
+                            {{ event.start }} - {{ event.title }}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+
+        <hr />
+
+        <h1>Next week's reminders</h1>
+        {% for account in accounts %}
+            <h2>{{ account.name }}</h2>
+            {% if account.reminders|length == 0 %}
+                Nothing scheduled in the next week.
+            {% else %}
+                <ul>
+                    {% for reminder in account.reminders %}
+                        <li>
+                            <h3>{{ reminder.title }}</h3>
+                            <p>Due: {{ reminder.due }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endfor %}
+    </body>
+</html>

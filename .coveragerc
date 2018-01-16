@@ -1,0 +1,3 @@
+[run]
+source = lifehud
+omit = lifehud/test*
