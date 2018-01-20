@@ -1,8 +1,7 @@
 config:
   icloud:
     users:
-      - user: your_apple_id
-        password: your_apple_id_password
+      - your_apple_id
   calendar:
     client_id: your.google.calendar.client.id
     client_secret: your_google_calendar_client_secret

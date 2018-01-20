@@ -1,3 +1,5 @@
+from getpass import getpass
+
 from pyicloud import PyiCloudService
 from pyicloud.exceptions import PyiCloudAPIResponseError
 
@@ -10,7 +12,9 @@ class ICloud(object):
     @staticmethod
     def initialize(config):
         for i in config['users']:
-            ICloud.add_account(i['user'], i['password'])
+            password = getpass('Enter the iCloud password for %s: ' % i)
+            ICloud.add_account(i, password)
+
 
     @staticmethod
     def add_account(username, password):
