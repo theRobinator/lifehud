@@ -55,24 +55,5 @@
             </ul>
         </div>
         {% endfor %}
-
-        <hr />
-
-        <h1>Next week's reminders</h1>
-        {% for account in accounts %}
-            <h2>{{ account.name }}</h2>
-            {% if account.reminders|length == 0 %}
-                Nothing scheduled in the next week.
-            {% else %}
-                <ul>
-                    {% for reminder in account.reminders %}
-                        <li>
-                            <h3>{{ reminder.title }}</h3>
-                            <p>Due: {{ reminder.due }}</p>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        {% endfor %}
     </body>
 </html>
