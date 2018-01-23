@@ -61,6 +61,11 @@ class Calendar(object):
         return result
 
     @staticmethod
+    def iterate_events():
+        for account in Calendar.accounts:
+            yield Calendar.get_events(account)
+
+    @staticmethod
     def get_events(calendar_id):
         http = Calendar.credentials.authorize(httplib2.Http())
         service = discovery.build('calendar', 'v3', http=http)
@@ -68,7 +73,7 @@ class Calendar(object):
         now = datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
         one_week_ahead = (datetime.utcnow() + timedelta(weeks=1)).isoformat() + 'Z'
         eventsResult = service.events().list(
-            calendarId=calendar_id, timeMin=now, timeMax=one_week_ahead, maxResults=10, singleEvents=True, orderBy='startTime'
+            calendarId=calendar_id, timeMin=now, timeMax=one_week_ahead, maxResults=100, singleEvents=True, orderBy='startTime'
         ).execute()
         events = eventsResult.get('items', [])
 

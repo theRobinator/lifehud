@@ -6,6 +6,7 @@ from pyicloud.exceptions import PyiCloudAPIResponseError
 
 class ICloud(object):
     """ The ICloud class wraps the iCloud API, and can return just about anything related to an iCloud account. """
+    account_names = []
     connected_accounts = {}
     account_passwords = {}
 
@@ -18,6 +19,7 @@ class ICloud(object):
 
     @staticmethod
     def add_account(username, password):
+        ICloud.account_names.append(username)
         ICloud.account_passwords[username] = password
         api = PyiCloudService(username, password)
         ICloud.connected_accounts[username] = api
@@ -30,3 +32,8 @@ class ICloud(object):
         except PyiCloudAPIResponseError, e:
             ICloud.add_account(username, ICloud.account_passwords[username])
             return ICloud.connected_accounts[username].reminders
+
+    @staticmethod
+    def iterate_reminders():
+        for username in account_names:
+            yield ICloud.get_reminders(username)

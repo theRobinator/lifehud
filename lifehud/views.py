@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import time, datetime, timedelta
 import heapq
 
 from pyramid.view import view_config
@@ -8,52 +8,95 @@ from icloud import ICloud
 from weather import Weather
 
 
-WEATHER_HOURS_AHEAD = 12
-
-
 @view_config(route_name='home', renderer='templates/hud.jinja2')
 def my_view(request):
     """ This function handles incoming requests and comes up with the data that will be passed into our HTML template.
         This file is our entire "controller layer".
     """
 
-    accounts = []
-    for email, cloud_api in ICloud.connected_accounts.iteritems():
-        accounts.append({
-            'name': cloud_api.data['dsInfo']['firstName'],
-            'reminders': find_scheduled_reminders(ICloud.get_reminders(email)),
-        })
+    dates = [datetime.now().date() + timedelta(days=x) for x in range(0, 7)]
+    events_by_date = {i: [] for i in dates}
+    # events should have the properties start: datetime, end: datetime, owners: list of ints, title: string
+
+    # i = 0
+    # for reminder_list in ICloud.iterate_reminders():
+    #     for reminder in find_scheduled_reminders(reminder_list):
+    #         day = reminder['due'].date()
+    #         if day in events_by_date:
+    #             events_by_date[day].append({
+    #                 start: reminder['due'],
+    #                 owners: [i],
+    #                 title: reminder['title']
+    #             })
+    #     i += 1
+
+    # REMINDER TEST
+    events_by_date[dates[1]].append({
+        'start': datetime.now() + timedelta(days=1),
+        'owners': [0],
+        'title': "Example reminder 1",
+        'type': "reminder"
+    })
+    events_by_date[dates[2]].append({
+        'start': datetime.now() + timedelta(days=2),
+        'owners': [1],
+        'title': "Example reminder 2",
+        'type': "reminder"
+    })
 
     weather_info = Weather.get_forecast()
-    forecast = []
+    forecasts_by_date = {i: [] for i in dates}
+    display_hours = [x for x in range(9, 22, 3)]
     for hour_info in weather_info.data:
-        hour_time = datetime.fromtimestamp(hour_info['time'])
-        if hour_time < datetime.now():
+        time = datetime.fromtimestamp(hour_info['time'])
+        date = time.date()
+        hour = time.hour
+        if not hour in display_hours:
             continue
-        forecast.append({
-            'time': hour_time.strftime('%a %I:%M %p'),  # Mon 12:00 PM
+        forecasts_by_date[date].append({
+            'time': time,
             'icon': hour_info['icon'],
             'summary': hour_info['summary'],
             'temperature': int(round(hour_info['temperature'], 0)),
             'feelsLike': int(round(hour_info['apparentTemperature'], 0)),
             'rainChance': int(hour_info['precipProbability'] * 100),
         })
-        if len(forecast) == WEATHER_HOURS_AHEAD:
-            break
 
-    calendar_events = Calendar.get_events('robinthekeller@gmail.com')
-    calendar_events.extend(Calendar.get_events('rose.abernathy@gmail.com'))
-    calendar_events = Calendar.get_all_events()
-    full_calendar = format_calendar_events(calendar_events)
+    # calendar_events = Calendar.get_events('robinthekeller@gmail.com')
+    # calendar_events.extend(Calendar.get_events('rose.abernathy@gmail.com'))
+    # calendar_events = Calendar.get_all_events()
+    # full_calendar = format_calendar_events(calendar_events)
+    i = 0
+    for event_list in Calendar.iterate_events():
+        for event in event_list:
+            day = event['start'].date()
+            if day in events_by_date:
+                # First check for duplicates
+                existing_event = find_existing_event_in_list(event, events_by_date[day])
+                if existing_event:
+                    existing_event['owners'].append(i)
+                else:
+                    event['owners'] = [i]
+                    event['type'] = "calendar"
+                    events_by_date[day].append(event)
+        i += 1
 
     viewmodel = {
-        'accounts': accounts,
-        'calendar': full_calendar,
-        'forecast': forecast,
+        'days': [{
+            'date': i,
+            'events': sorted(events_by_date[i], key=lambda e: e['start']),
+            'forecast': forecasts_by_date[i]
+        } for i in dates]
     }
 
     return viewmodel
 
+def find_existing_event_in_list(event, event_list):
+    for event2 in event_list:
+        if event['title'] == event2['title']\
+            and event['start'] == event2['start']\
+            and event['end'] == event2['end']:
+            return event2
 
 def find_scheduled_reminders(reminders):
     scheduled = []
@@ -65,7 +108,7 @@ def find_scheduled_reminders(reminders):
     sorted_reminders = [heapq.heappop(scheduled)[1] for i in xrange(len(scheduled))]
     return [{
         'title': i['title'],
-        'due': i['due'].strftime('%A %I:%M %p'),
+        'due': i['due'],
     } for i in sorted_reminders]
 
 

@@ -1,152 +1,100 @@
 @import url(//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700);
-body {
-  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 300;
-  color: #ffffff;
-  background: #bc2131;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 300;
-}
-p {
-  font-weight: 300;
-}
-.font-normal {
-  font-weight: 400;
-}
-.font-semi-bold {
-  font-weight: 600;
-}
-.font-bold {
-  font-weight: 700;
-}
-.starter-template {
-  margin-top: 250px;
-}
-.starter-template .content {
-  margin-left: 10px;
-}
-.starter-template .content h1 {
-  margin-top: 10px;
-  font-size: 60px;
-}
-.starter-template .content h1 .smaller {
-  font-size: 40px;
-  color: #f2b7bd;
-}
-.starter-template .content .lead {
-  font-size: 25px;
-  color: #f2b7bd;
-}
-.starter-template .content .lead .font-normal {
-  color: #ffffff;
-}
-.starter-template .links {
-  float: right;
-  right: 0;
-  margin-top: 125px;
-}
-.starter-template .links ul {
-  display: block;
-  padding: 0;
-  margin: 0;
-}
-.starter-template .links ul li {
-  list-style: none;
-  display: inline;
-  margin: 0 10px;
-}
-.starter-template .links ul li:first-child {
-  margin-left: 0;
-}
-.starter-template .links ul li:last-child {
-  margin-right: 0;
-}
-.starter-template .links ul li.current-version {
-  color: #f2b7bd;
-  font-weight: 400;
-}
-.starter-template .links ul li a {
-  color: #ffffff;
-}
-.starter-template .links ul li a:hover {
-  text-decoration: underline;
-}
-.starter-template .links ul li .icon-muted {
-  color: #eb8b95;
-  margin-right: 5px;
-}
-.starter-template .links ul li:hover .icon-muted {
-  color: #ffffff;
-}
-.starter-template .copyright {
-  margin-top: 10px;
-  font-size: 0.9em;
-  color: #f2b7bd;
-  text-transform: lowercase;
-  float: right;
-  right: 0;
-}
-@media (max-width: 1199px) {
-  .starter-template .content h1 {
-    font-size: 45px;
-  }
-  .starter-template .content h1 .smaller {
-    font-size: 30px;
-  }
-  .starter-template .content .lead {
-    font-size: 20px;
-  }
-}
-@media (max-width: 991px) {
-  .starter-template {
-    margin-top: 0;
-  }
-  .starter-template .logo {
-    margin: 40px auto;
-  }
-  .starter-template .content {
-    margin-left: 0;
-    text-align: center;
-  }
-  .starter-template .content h1 {
-    margin-bottom: 20px;
-  }
-  .starter-template .links {
-    float: none;
-    text-align: center;
-    margin-top: 60px;
-  }
-  .starter-template .copyright {
-    float: none;
-    text-align: center;
-  }
-}
-@media (max-width: 767px) {
-  .starter-template .content h1 .smaller {
-    font-size: 25px;
-    display: block;
-  }
-  .starter-template .content .lead {
-    font-size: 16px;
-  }
-  .starter-template .links {
-    margin-top: 40px;
-  }
-  .starter-template .links ul li {
-    display: block;
+
+* {
     margin: 0;
-  }
-  .starter-template .links ul li .icon-muted {
-    display: none;
-  }
-  .starter-template .copyright {
-    margin-top: 20px;
-  }
+    padding: 0;
+}
+
+body {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    color: #ffffff;
+    background: #424242;
+}
+
+.day {
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background: #2f2f2f;
+}
+
+/***** WEATHER *****/
+
+.weather > li {
+    position: relative;
+    display: block;
+    float: left;
+    height: 3em;
+    margin: 0.25em;
+    padding: 0 0.25em;
+
+    text-align: center;
+}
+
+.weather li:before {
+    display:block;
+    content: "";
+    height: 1.25em;
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: #6f6f6f;
+    background: linear-gradient(90deg, #6f6f6f 50%, transparent 100%);
+}
+
+.weather li > div
+{
+    position: relative;
+    width: 2.5em;
+    height: 3em;
+    float: left;
+}
+
+.weather img {
+    height: 100%;
+}
+
+.weather .time {
+    display: block;
+    margin-bottom: 0.1em;
+    font-size: 0.9em;
+    color: black;
+}
+
+.weather .precipitation {
+    position: absolute;
+    top: 0.75em;
+    left: 0.5em;
+    right: 0;
+
+    color: black;
+    font-size: 0.9em;
+    text-shadow: -1px -1px 1px #fff,
+                1px -1px 1px #fff,
+                -1px 1px 1px #fff,
+                1px 1px 1px #fff;
+}
+
+/***** CALENDAR *****/
+
+.calendar { clear: both; }
+
+.calendar li {
+    color: #2f2f2f;
+    background: #e2e2e2;
+    padding: 0.25em 0.5em;
+    margin: 0.25em;
+}
+
+.calendar li.owner0 {
+    background: #fff1a2;
+}
+
+.calendar li.owner1 {
+    background: #b7e9ff;
+}
+
+.calendar li.owner0.owner1 {
+    background-image: linear-gradient(0, #fff1a2 50%, transparent 50%)
 }

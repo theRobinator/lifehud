@@ -8,39 +8,52 @@
     <title>Life HUD</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="//oss.maxcdn.com/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+    <!--link href="//oss.maxcdn.com/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet"-->
 
     <!-- Custom styles for this scaffold -->
     <link href="{{request.static_url('lifehud:static/theme.css')}}" rel="stylesheet">
   </head>
     <body>
-        <h1>Weather</h1>
-        <ul>
-            {% for hour in forecast %}
-                <li>
-                    <img style="height: 1em;" src="{{ request.static_url('lifehud:static/images/weather/' + hour.icon + '.png') }}">
-                    {{ hour.time }}: {{ hour.summary }}, {{ hour.feelsLike }}&deg;{% if hour.rainChance >= 20 %}, {{ hour.rainChance }}% chance of rain{% endif %}
-                </li>
-            {% endfor %}
-        </ul>
+    {{ debug }}
+        {% for day in days %}
+        <div class="day">
+            <h2>{{ day['date'].strftime('%A, %B %d') }}</h2>
 
-        <hr />
-
-        <h1>Next week's calendar</h1>
-        {% for day_info in calendar %}
-            <h2>{{ day_info[0]['day'] }}</h2>
-            <ul>
-                {% for event in day_info %}
+            {% if day['forecast'] %}
+                <ul class="weather">
+                    {% for hour in day['forecast'] %}
                     <li>
-                        ({{ event.calendar }})
+                        <div>
+                            <span class="time">{{ hour.time.strftime('%I%p').lower() }}</span>
+                            <span class="temp">{{ hour.feelsLike }}&deg;</span>
+                        </div>
+                        <div>
+                            <img src="{{ request.static_url('lifehud:static/images/weather/'+hour.icon+'.png') }}">
+                            {% if hour.rainChance >= 20 %}
+                            <span class="precipitation">{{ hour.rainChance }}%</span>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <ul class="calendar">
+                {% for event in day['events'] %}
+                    <li class="{{ event.type }}
+                        {% for owner in event.owners %} owner{{ owner }} {% endfor %}
+                    ">
+
                         {% if event.all_day %}
-                            {{ event.title }}
+                            <span class="time">(All day)</span>
                         {% else %}
-                            {{ event.start }} - {{ event.title }}
+                            <span class="time">{{ event.start.strftime('%I:%M%p').lower() }}</span>
                         {% endif %}
+                        <span class="title">{{ event.title }}</span>
                     </li>
                 {% endfor %}
             </ul>
+        </div>
         {% endfor %}
 
         <hr />
