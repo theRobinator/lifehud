@@ -14,29 +14,32 @@
     <link href="{{request.static_url('lifehud:static/theme.css')}}" rel="stylesheet">
   </head>
     <body>
-    {{ debug }}
+    <div id="app">
         {% for day in days %}
         <div class="day">
-            <h2>{{ day['date'].strftime('%A, %B %d') }}</h2>
+            <section>
+                <h2>{{ day['date'].strftime('%A').upper() }}</h2>
+                <p>{{ day['date'].strftime('%B %d') }}</p>
 
-            {% if day['forecast'] %}
-                <ul class="weather">
-                    {% for hour in day['forecast'] %}
-                    <li>
-                        <div>
-                            <span class="time">{{ hour.time.strftime('%I%p').lower() }}</span>
-                            <span class="temp">{{ hour.feelsLike }}&deg;</span>
-                        </div>
-                        <div>
-                            <img src="{{ request.static_url('lifehud:static/images/weather/'+hour.icon+'.png') }}">
-                            {% if hour.rainChance >= 20 %}
-                            <span class="precipitation">{{ hour.rainChance }}%</span>
-                            {% endif %}
-                        </div>
-                    </li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+                {% if day['forecast'] %}
+                    <ul class="weather">
+                        {% for hour in day['forecast'] %}
+                        <li>
+                            <div>
+                                <span class="time">{{ hour.time.strftime('%I%p').lower() }}</span>
+                                <span class="temp">{{ hour.feelsLike }}&deg;</span>
+                            </div>
+                            <div>
+                                <img src="{{ request.static_url('lifehud:static/images/weather/'+hour.icon+'.png') }}">
+                                {% if hour.rainChance >= 20 %}
+                                <span class="precipitation">{{ hour.rainChance }}%</span>
+                                {% endif %}
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </section>
 
             <ul class="calendar">
                 {% for event in day['events'] %}
@@ -55,5 +58,6 @@
             </ul>
         </div>
         {% endfor %}
+    </div>
     </body>
 </html>
