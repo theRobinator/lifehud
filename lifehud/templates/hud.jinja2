@@ -16,14 +16,14 @@
     <body>
     <div id="app">
         {% for day in days %}
-        <div class="day">
+        <div class="day {% if not day.events %}eventless{% endif %}">
             <section>
-                <h2>{{ day['date'].strftime('%A').upper() }}</h2>
-                <p>{{ day['date'].strftime('%B %d') }}</p>
+                <h2>{{ day.date.strftime('%A').upper() }}</h2>
+                <p>{{ day.date.strftime('%B %d') }}</p>
 
-                {% if day['forecast'] %}
+                {% if day.forecast %}
                     <ul class="weather">
-                        {% for hour in day['forecast'] %}
+                        {% for hour in day.forecast %}
                         <li>
                             <div>
                                 <span class="time">{{ hour.time.strftime('%I%p').lower() }}</span>
@@ -41,8 +41,10 @@
                 {% endif %}
             </section>
 
-            <ul class="calendar">
-                {% for event in day['events'] %}
+            <hr />
+
+            <ul class="events">
+                {% for event in day.events %}
                     <li class="{{ event.type }}
                         {% for owner in event.owners %} owner{{ owner }} {% endfor %}
                     ">

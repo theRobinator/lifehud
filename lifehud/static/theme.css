@@ -17,10 +17,6 @@ body {
     margin: auto;
 }
 
-li {
-    list-style: none;
-}
-
 .day {
     margin: 1rem;
     padding: 1rem;
@@ -37,9 +33,6 @@ li {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    padding-right: 1em;
-    margin-right: 1em;
-    border-right: 3px solid #424242;
 }
 
 .day h2 {
@@ -47,11 +40,19 @@ li {
 }
 
 .day p {
-    color: #6f6f6f;
+    color: #a2a2a2;
 }
 
 .day > ul {
     flex: 1;
+}
+
+hr {
+    border: none;
+    align-self: stretch;
+    background: #424242;
+    flex: 0 0 3px;
+    margin: 0 1em;
 }
 
 /***** WEATHER *****/
@@ -87,7 +88,7 @@ li {
 .weather li > div
 {
     position: relative;
-    width: 2.5em;
+    width: 2.25em;
     height: 3em;
     float: left;
 }
@@ -109,33 +110,95 @@ li {
     left: 0.5em;
     right: 0;
 
-    color: black;
-    font-size: 0.9em;
-    text-shadow: -1px -1px 1px #fff,
-                1px -1px 1px #fff,
-                -1px 1px 1px #fff,
-                1px 1px 1px #fff;
-}
-
-/***** CALENDAR *****/
-
-.calendar { clear: both; }
-
-.calendar li {
     color: #2f2f2f;
-    background: #e2e2e2;
-    padding: 0.25em 0.5em;
-    margin: 0.25em;
+    font-size: 0.9em;
+    font-weight: bold;
+    text-shadow: -1px -1px 2px #fff,
+                1px -1px 2px #fff,
+                -1px 1px 2px #fff,
+                1px 1px 2px #fff;
 }
 
-.calendar li.owner0 {
-    background: #fff1a2;
+/***** EVENTS *****/
+
+.events li {
+    /*outline: 1px solid #424242;*/
+    margin-bottom: 0.5em;
+    position: relative;
+    list-style: none;
+    vertical-align: top;
 }
 
-.calendar li.owner1 {
-    background: #b7e9ff;
+.events li:last-child {
+    margin-bottom: 0;
 }
 
-.calendar li.owner0.owner1 {
-    background-image: linear-gradient(0, #fff1a2 50%, transparent 50%)
+.events .time {
+    color: #a2a2a2;
+    margin-right: 0.25em;
+}
+
+
+.events li:before {
+    content: "■ ";
+    font-size: 2em;
+    line-height: 0.5em;
+    vertical-align: top;
+}
+
+.events li.reminder:before {
+    content: "● ";
+}
+
+.events li.owner0:before {
+    color: #fceb0f;
+}
+
+.events li.owner1:before {
+    color: #41c6ff;
+}
+
+.events li.owner0.owner1:before {
+    background: -webkit-linear-gradient(45deg, #41c6ff 38%, #fceb0f 38%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.events li.reminder {
+    border-radius: 1em 0 0 1em;
+}
+
+/***** PHONE *****/
+
+@media (max-width: 600px) {
+    .day {
+        margin: 1em 0;
+    }
+}
+
+@media (orientation: portrait) {
+    .day {
+        flex-direction: column;
+    }
+
+    hr {
+        margin: 1em 0;
+    }
+
+    .eventless hr {
+        display: none;
+    }
+
+    hr:last-child {
+        display: none;
+    }
+
+    .day section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .weather {
+        justify-content: center;
+    }
 }
