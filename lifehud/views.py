@@ -18,31 +18,18 @@ def my_view(request):
     events_by_date = {i: [] for i in dates}
     # events should have the properties start: datetime, end: datetime, owners: list of ints, title: string
 
-    # i = 0
-    # for reminder_list in ICloud.iterate_reminders():
-    #     for reminder in find_scheduled_reminders(reminder_list):
-    #         day = reminder['due'].date()
-    #         if day in events_by_date:
-    #             events_by_date[day].append({
-    #                 start: reminder['due'],
-    #                 owners: [i],
-    #                 title: reminder['title']
-    #             })
-    #     i += 1
-
-    # REMINDER TEST
-    events_by_date[dates[1]].append({
-        'start': datetime.now() + timedelta(days=1),
-        'owners': [0],
-        'title': "Example reminder 1",
-        'type': "reminder"
-    })
-    events_by_date[dates[2]].append({
-        'start': datetime.now() + timedelta(days=2),
-        'owners': [1],
-        'title': "Example reminder 2",
-        'type': "reminder"
-    })
+    i = 0
+    for reminder_list in ICloud.iterate_reminders():
+        for reminder in find_scheduled_reminders(reminder_list):
+            day = reminder['due'].date()
+            if day in events_by_date:
+                events_by_date[day].append({
+                    'start': reminder['due'],
+                    'owners': [i],
+                    'title': reminder['title'],
+                    'type': 'reminder',
+                })
+        i += 1
 
     weather_info = Weather.get_forecast()
     forecasts_by_date = {i: [] for i in dates}

@@ -12,7 +12,7 @@ def main(global_config, **settings):
     with open('config.yaml', 'r') as fp:
         local_config = yaml.safe_load(fp)['config']
     Calendar.initialize(local_config['calendar'])
-    # ICloud.initialize(local_config['icloud'])
+    ICloud.initialize(local_config['icloud'])
     Weather.initialize(local_config['weather'])
 
     config = Configurator(settings=settings)
