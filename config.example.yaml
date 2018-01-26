@@ -3,7 +3,10 @@ config:
     users:
       - your_apple_id
   calendar:
+    accounts:
+      - your.email@gmail.com
     client_id: your.google.calendar.client.id
     client_secret: your_google_calendar_client_secret
   weather:
+    location: [latitude, longitude]
     api_key: your_dark_sky_api_key
