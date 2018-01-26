@@ -23,8 +23,7 @@ class Weather(object):
         if Weather.last_updated is not None and datetime.now() - UPDATE_INTERVAL < Weather.last_updated:
             return Weather.data
 
-        if Weather.position_api is None:
-            Weather.position_api = ForecastIO.ForecastIO(Weather.api_key, latitude=Weather.location[0], longitude=Weather.location[1])
+        Weather.position_api = ForecastIO.ForecastIO(Weather.api_key, latitude=Weather.location[0], longitude=Weather.location[1])
 
         Weather.data = FIOHourly.FIOHourly(Weather.position_api)
         Weather.last_updated = datetime.now()
