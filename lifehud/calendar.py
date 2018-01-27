@@ -1,6 +1,7 @@
 import httplib2
 import os
 from datetime import datetime, timedelta
+import sys
 import webbrowser
 
 import argparse
@@ -50,7 +51,11 @@ class Calendar(object):
                                    scope='https://www.googleapis.com/auth/calendar.readonly',
                                    redirect_uri='http://localhost:6543/oauthCallback')
         auth_uri = Calendar.flow.step1_get_authorize_url()
-        webbrowser.open(auth_uri, 1)
+        can_auth_with_browser = webbrowser.open(auth_uri, 1)
+        if not can_auth_with_browser:
+            print 'Go to this URL to link your calendar and hit enter when done: ' + auth_uri
+            sys.stdin.readline()
+        
 
 
     @staticmethod
