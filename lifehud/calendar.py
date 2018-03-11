@@ -1,6 +1,7 @@
 import httplib2
 import os
 from datetime import datetime, timedelta
+from dateutil import parser
 import sys
 import webbrowser
 
@@ -92,8 +93,8 @@ class Calendar(object):
                 end_date = datetime.strptime(e['end']['date'], '%Y-%m-%d')
             else:
                 all_day = False
-                start_date = datetime.strptime(e['start']['dateTime'], '%Y-%m-%dT%H:%M:%S-08:00')
-                end_date = datetime.strptime(e['end']['dateTime'], '%Y-%m-%dT%H:%M:%S-08:00')
+                start_date = parser.parse(e['start']['dateTime'])
+                end_date = parser.parse(e['end']['dateTime'])
 
             result.append({
                 'calendar': calendar_id,
