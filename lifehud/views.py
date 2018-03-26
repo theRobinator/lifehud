@@ -1,4 +1,5 @@
 from datetime import time, datetime, timedelta
+from dateutil import tz
 import heapq
 
 from pyramid.view import view_config
@@ -35,7 +36,7 @@ def my_view(request):
     forecasts_by_date = {i: [] for i in dates}
     display_hours = [x for x in range(9, 22, 3)]
     for hour_info in weather_info.data:
-        time = datetime.fromtimestamp(hour_info['time'])
+        time = datetime.fromtimestamp(hour_info['time'], tz=tz.tzlocal())
         date = time.date()
         hour = time.hour
         if not hour in display_hours:
@@ -49,10 +50,6 @@ def my_view(request):
             'rainChance': int(hour_info['precipProbability'] * 100),
         })
 
-    # calendar_events = Calendar.get_events('robinthekeller@gmail.com')
-    # calendar_events.extend(Calendar.get_events('rose.abernathy@gmail.com'))
-    # calendar_events = Calendar.get_all_events()
-    # full_calendar = format_calendar_events(calendar_events)
     i = 0
     for event_list in Calendar.iterate_events():
         for event in event_list:
@@ -95,7 +92,7 @@ def find_scheduled_reminders(reminders):
     sorted_reminders = [heapq.heappop(scheduled)[1] for i in xrange(len(scheduled))]
     return [{
         'title': i['title'],
-        'due': i['due'],
+        'due': i['due'].replace(tzinfo=tz.tzlocal()),
     } for i in sorted_reminders]
 
 

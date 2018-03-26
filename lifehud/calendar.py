@@ -89,8 +89,8 @@ class Calendar(object):
         for e in events:
             if 'date' in e['start']:
                 all_day = True
-                start_date = datetime.strptime(e['start']['date'], '%Y-%m-%d')
-                end_date = datetime.strptime(e['end']['date'], '%Y-%m-%d')
+                start_date = parser.parse(e['start']['date'])
+                end_date = parser.parse(e['end']['date'])
             else:
                 all_day = False
                 start_date = parser.parse(e['start']['dateTime'])
