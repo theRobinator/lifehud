@@ -1,14 +1,12 @@
 import httplib2
 import os
 from datetime import datetime, timedelta
-from dateutil import parser
+from dateutil import parser, tz
 import sys
 import webbrowser
 
-import argparse
 from apiclient import discovery
 from oauth2client import client
-from oauth2client import tools
 from oauth2client.file import Storage
 from pyramid.view import view_config
 from pyramid.response import Response
@@ -95,6 +93,11 @@ class Calendar(object):
                 all_day = False
                 start_date = parser.parse(e['start']['dateTime'])
                 end_date = parser.parse(e['end']['dateTime'])
+
+            if start_date.tzinfo is None:
+                start_date = start_date.replace(tzinfo=tz.tzlocal())
+            if end_date.tzinfo is None:
+                end_date = end_date.replace(tzinfo=tz.tzlocal())
 
             result.append({
                 'calendar': calendar_id,

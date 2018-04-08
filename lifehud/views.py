@@ -75,12 +75,14 @@ def my_view(request):
 
     return viewmodel
 
+
 def find_existing_event_in_list(event, event_list):
     for event2 in event_list:
         if event['title'] == event2['title']\
             and event['start'] == event2['start']\
             and event['end'] == event2['end']:
             return event2
+
 
 def find_scheduled_reminders(reminders):
     scheduled = []
