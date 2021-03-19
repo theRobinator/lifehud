@@ -8,7 +8,7 @@ httplib2==0.10.3
 hupper==1.0
 idna==2.6
 ipaddress==1.0.19
-Jinja2==2.10
+Jinja2==2.11.3
 keyring==8.7
 keyrings.alt==1.3
 -e git+git@github.com:theRobinator/lifehud.git@1e3e478d261e572c590458f1ce7fea2f13027556#egg=lifehud
